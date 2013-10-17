@@ -187,21 +187,11 @@ function error_501(req, res, next) {
 ////////////
 
 var engine = require('./lib/engine');
-var afinn = require('./lib/afinn'); // needed here just to load the afinn data
 
 app.post('/api/analyze', engine.analyze_api);
 
-app.post('/analyze', function(req, res) {
-	return engine.analyze(req.body, function(err, result) {
-		res.render('result.html', {
-			args: req.body,
-			result: result
-		});
-	});
-});
-
 app.get('/', function(req, res) {
-	return res.render('home.html');
+	return res.render('main.html');
 });
 
 // start http server

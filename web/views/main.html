@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="bullyalert_app">
+
+<head>
+	<?# def.include('common_head.html') ?>
+</head>
+
+<body ng-controller="BullyCtrl">
+
+	<div class="jumbotron">
+		<div class="container">
+			<h1>BULLY ALERT</h1>
+			<div class="text-center" style="width: 70%">
+				<input type="text" class="form-control"
+					placeholder="Enter Query to Analyze for Bully Alert"
+					ng-model="query"/>
+				<button class="btn btn-danger"
+					ng-click="analyze()">
+					Check for Bully-ness
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div ng-show="!!last_query || !!last_result"
+		class="jumbotron text-center">
+		<div class="container">
+			<div ng-show="!last_result">
+				<i class="icon-spin icon-spinner" style="font-size: 40px"></i>
+			</div>
+			<div ng-show="last_result">
+				<h3>{{ last_query }} - LEVEL <b>{{ last_result.level }}</b></h3>
+				<ul class="text-left">
+					<li ng-repeat="b in last_result.bullys">
+						Bully {{ b.user.name }} - LEVEL {{ b.avg_level }}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<?# def.include('common_scripts.html') ?>
+</body>
+
+</html>
