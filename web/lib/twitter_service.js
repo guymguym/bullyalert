@@ -2,6 +2,7 @@
 var async = require('async');
 var twitter = require('twitter');
 var _ = require('underscore');
+var S = require('string');
 
 var consumer_key = '1RsaHtdnJxMWAQIU5gah5Q';
 var consumer_secret = 'g7KNom2T55oiSwp66BwGi2PbzwwzP45I9Juvx3E8Q';
@@ -23,7 +24,12 @@ var twit = new twitter({
 	access_token_secret: access_token_secret
 });
 
-// var user_info = {};
+exports.tweet_search = function(search_expression, callback) {
+	twit.search(search_expression, function(data) {
+		callback(null,data);
+	});
+};
+
 twit.search('@grolnik', function(data) {
 	// console.log(util.inspect(data));
 	var tweets = data.statuses;
@@ -112,6 +118,5 @@ twit.search('@grolnik', function(data) {
 
 		// console.log('tweet.text: ',tweet.text);
 	});
-
-
 });
+

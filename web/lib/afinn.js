@@ -16,3 +16,5 @@ exports.words = text_to_json(fs.readFileSync(
 		encoding: 'utf8'
 	}
 ));
+
+exports.unknown_words = {};
