@@ -1,6 +1,7 @@
 function analyze(args, callback) {
+	console.log('ANALYZE ARGS', args);
 	return callback(null, {
-		level: 0
+		level: 0.6
 	});
 }
 
