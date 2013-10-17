@@ -35,7 +35,7 @@
 
 		$scope.stringify = function(o) {
 			return JSON.stringify(o);
-		}
+		};
 	}
 
 })();

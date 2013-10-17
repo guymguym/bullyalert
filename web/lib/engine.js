@@ -48,9 +48,7 @@ function analyze(args, callback) {
 					total_count++;
 					console.log('LEVEL', msg.level, avg_level, total_level);
 				}
-				_.sortBy(list, function(msg) {
-					return msg.level;
-				});
+				_.sortBy(list, 'level');
 				avg_level /= list.length;
 				var user = {
 					user: list[0].user,
@@ -62,9 +60,7 @@ function analyze(args, callback) {
 				}
 				users_map[id] = user;
 			}
-			_.sortBy(bullys, function(user) {
-				return user.avg_level;
-			});
+			_.sortBy(bullys, 'level');
 			total_level /= total_count;
 
 			return next(null, {

@@ -33,7 +33,7 @@
 				<ul class="text-left">
 					<li ng-repeat="bull in last_result.bullys">
 						<b ng-click="bull.expanded = !bull.expanded">
-							{{ bull.user.name }} - LEVEL {{ bull.avg_level }}
+							{{ bull.user.name }} - LEVEL {{ bull.level }}
 						</b>
 						<div ng-repeat="t in bull.twits">
 							{{ t.text }} - LEVEL {{ t.level }}
