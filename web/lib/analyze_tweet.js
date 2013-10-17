@@ -26,7 +26,7 @@ function get_text_score(text) {
 			// unknown_words.push(word);
 		}
 	});
-	console.log('words: ', words, sum);
+	console.log('SCORE', text, sum);
 
 	/*
 	unknown_words = _.uniq(unknown_words);
