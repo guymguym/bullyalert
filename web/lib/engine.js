@@ -1,6 +1,7 @@
 var async = require('async');
 var _ = require('underscore');
 var afinn = require('./afinn');
+var twitter = require('./twitter_service');
 
 function analyze(args, callback) {
 	console.log('ANALYZE ARGS', args);
@@ -10,7 +11,13 @@ function analyze(args, callback) {
 	return async.waterfall([
 
 		function(next) {
-			// TODO: twitter search of args.query
+			return twitter.tweet_search(args.query, function(err, data) {
+				if (err) {
+					return next(err);
+				}
+				return next(null, data.statuses);
+			});
+			/*
 			var num = Math.floor(Math.random() * 100);
 			var messages = new Array(num);
 			for (var i = 0; i < num; i++) {
@@ -23,10 +30,12 @@ function analyze(args, callback) {
 				};
 			}
 			return next(null, messages);
+			*/
 		},
 
 		function(messages, next) {
 			var i, msg;
+			console.log(messages);
 
 			// calculate level per twit
 			for (i = 0; i < messages.length; i++) {

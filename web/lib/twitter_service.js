@@ -3,6 +3,8 @@ var async = require('async');
 var twitter = require('twitter');
 var _ = require('underscore');
 var S = require('string');
+var util = require('util');
+var twitter = require('twitter');
 
 var consumer_key = '1RsaHtdnJxMWAQIU5gah5Q';
 var consumer_secret = 'g7KNom2T55oiSwp66BwGi2PbzwwzP45I9Juvx3E8Q';
@@ -12,11 +14,6 @@ var access_token_url = 'https://api.twitter.com/oauth/access_token';
 var access_token_key = '102069611-nhCgrP7Yhs0mpciDqhtcoTms1oFIocxQtiNymV4r';
 var access_token_secret = 'YbrTeF7x1l2gCyZnIjdeoQ63cowVHalsGdDG4MncI';
 var access_level = 'Read-only';
-
-console.log('test');
-
-var util = require('util'),
-	twitter = require('twitter');
 var twit = new twitter({
 	consumer_key: consumer_key,
 	consumer_secret: consumer_secret,
@@ -25,10 +22,13 @@ var twit = new twitter({
 });
 
 exports.tweet_search = function(search_expression, callback) {
-	twit.search(search_expression, function(data) {
-		callback(null,data);
+	return twit.search(search_expression, function(data) {
+		return callback(null, data);
 	});
 };
+
+
+/*
 
 twit.search('@grolnik', function(data) {
 	// console.log(util.inspect(data));
@@ -120,3 +120,4 @@ twit.search('@grolnik', function(data) {
 	});
 });
 
+*/
