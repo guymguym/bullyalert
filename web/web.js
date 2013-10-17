@@ -190,7 +190,7 @@ function error_501(req, res, next) {
 
 app.get('/', function(req, res) {
 	res.end('BULLY');
-})
+});
 
 // start http server
 var server = http.createServer(app);
