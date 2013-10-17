@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="bullyalert_app">
+
+<head>
+	<?# def.include('common_head.html') ?>
+</head>
+
+<body>
+	<div class="jumbotron">
+		<div class="container">
+			<h1>BULLY ALERT RESULTS</h1>
+			<div class="lead"> <?! JSON.stringify(it.args) ?> </div>
+			<br>
+			<div class="lead"> <?! JSON.stringify(it.result) ?> </div>
+		</div>
+	</div>
+	<?# def.include('common_scripts.html') ?>
+</body>
+
+</html>

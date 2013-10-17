@@ -188,7 +188,16 @@ function error_501(req, res, next) {
 
 var engine = require('./lib/engine');
 
-app.post('/analyze', engine.analyze);
+app.post('/api/analyze', engine.analyze_api);
+
+app.post('/analyze', function(req, res) {
+	return engine.analyze(req.body, function(err, result) {
+		res.render('result.html', {
+			args: req.body,
+			result: result
+		});
+	});
+});
 
 app.get('/', function(req, res) {
 	return res.render('home.html');
