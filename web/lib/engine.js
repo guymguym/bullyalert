@@ -36,6 +36,10 @@ function analyze(args, callback) {
 			var total_level = 0;
 			var total_count = 0;
 			var bullys = [];
+
+			function sort_reverse_level(o) {
+				return -o.level;
+			}
 			for (var id in group_by_user) {
 				var list = group_by_user[id];
 				var avg_level = 0;
@@ -46,9 +50,7 @@ function analyze(args, callback) {
 					total_count++;
 					// console.log('LEVEL', msg.level, avg_level, total_level);
 				}
-				list = _.sortBy(list, function(o) {
-					return -o.level;
-				});
+				list = _.sortBy(list, sort_reverse_level);
 				avg_level /= list.length;
 				var user = {
 					user: list[0].user,
@@ -59,9 +61,7 @@ function analyze(args, callback) {
 					bullys.push(user);
 				}
 			}
-			bullys = _.sortBy(bullys, function(o) {
-				return -o.level;
-			});
+			bullys = _.sortBy(bullys, sort_reverse_level);
 			total_level /= total_count;
 
 			return next(null, {
