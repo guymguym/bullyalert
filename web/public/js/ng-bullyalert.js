@@ -26,8 +26,7 @@
 			}, function(err) {
 				$scope.last_error = err;
 			});
-		}
-
+		};
 	}
 
 })();

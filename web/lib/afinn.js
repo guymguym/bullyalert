@@ -6,7 +6,7 @@ function text_to_json(text) {
 	var arr = text.toString().split('\n');
 	for (var i = 0; i < arr.length; i++) {
 		var line = arr[i].split('\t');
-		words[line[0]] = parseInt(line[1]);
+		words[line[0]] = parseInt(line[1], 10);
 	}
 	return words;
 }
