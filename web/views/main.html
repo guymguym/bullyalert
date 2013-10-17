@@ -7,8 +7,8 @@
 
 <body ng-controller="BullyCtrl">
 
-	<div class="jumbotron">
-		<div class="container">
+	<div class="container">
+		<div class="jumbotron">
 			<h1>BULLY ALERT</h1>
 			<div class="text-center" style="width: 70%">
 				<input type="text" class="form-control"
@@ -23,8 +23,8 @@
 	</div>
 
 	<div ng-show="!!last_query || !!last_result"
-		class="jumbotron text-center">
-		<div class="container">
+		class="container text-center">
+		<div class="jumbotron">
 			<div ng-show="!last_result">
 				<i class="icon-spin icon-spinner" style="font-size: 40px"></i>
 			</div>
@@ -45,6 +45,7 @@
 	</div>
 
 	<?# def.include('common_scripts.html') ?>
+	<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 </body>
 
 </html>

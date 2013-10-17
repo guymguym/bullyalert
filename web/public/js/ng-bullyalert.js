@@ -12,10 +12,10 @@
 		$scope.location = $location;
 
 		$scope.query = '@elizabeth_tice';
-		$scope.query = '@jenny_sad';
 		$scope.query = '@MileyCyrus';
 		$scope.query = '@yahoomail';
 		$scope.query = '@KarenGravanoVH1';
+		$scope.query = '@jenny_sad';
 
 		$scope.analyze = function() {
 			$scope.last_query = $scope.query;
