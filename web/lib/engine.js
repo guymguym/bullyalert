@@ -12,31 +12,16 @@ function analyze(args, callback) {
 	return async.waterfall([
 
 		function(next) {
-			return twitter.tweet_search(args.query, function(err, data) {
+			return twitter.tweet_search(args.query, function(err, messages) {
 				if (err) {
 					return next(err);
 				}
-				return next(null, data.statuses);
+				return next(null, messages);
 			});
-			/*
-			var num = Math.floor(Math.random() * 100);
-			var messages = new Array(num);
-			for (var i = 0; i < num; i++) {
-				var msg = messages[i] = {
-					user: {
-						id: Math.floor(Math.random() * 5),
-						name: 'bullyname'
-					},
-					text: 'bla'
-				};
-			}
-			return next(null, messages);
-			*/
 		},
 
 		function(messages, next) {
 			var i, msg;
-			console.log(messages);
 
 			// calculate level per twit
 			for (i = 0; i < messages.length; i++) {
@@ -61,18 +46,25 @@ function analyze(args, callback) {
 					avg_level += msg.level;
 					total_level += msg.level;
 					total_count++;
+					console.log('LEVEL', msg.level, avg_level, total_level);
 				}
+				_.sortBy(list, function(msg) {
+					return msg.level;
+				});
 				avg_level /= list.length;
 				var user = {
 					user: list[0].user,
-					avg_level: avg_level,
+					level: avg_level,
 					twits: list,
 				};
-				if (avg_level > 0.5) {
+				if (avg_level < -4) {
 					bullys.push(user);
 				}
 				users_map[id] = user;
 			}
+			_.sortBy(bullys, function(user) {
+				return user.avg_level;
+			});
 			total_level /= total_count;
 
 			return next(null, {

@@ -31,8 +31,13 @@
 			<div ng-show="last_result">
 				<h3>{{ last_query }} - LEVEL <b>{{ last_result.level }}</b></h3>
 				<ul class="text-left">
-					<li ng-repeat="b in last_result.bullys">
-						Bully {{ b.user.name }} - LEVEL {{ b.avg_level }}
+					<li ng-repeat="bull in last_result.bullys">
+						<b ng-click="bull.expanded = !bull.expanded">
+							{{ bull.user.name }} - LEVEL {{ bull.avg_level }}
+						</b>
+						<div ng-repeat="t in bull.twits">
+							{{ t.text }} - LEVEL {{ t.level }}
+						</div>
 					</li>
 				</ul>
 			</div>

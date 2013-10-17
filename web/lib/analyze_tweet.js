@@ -53,9 +53,9 @@ function score_is_problematic(score) {
 function get_tweet_score(tweet, scanned_user_screen_name) {
 	var score = get_text_score(tweet.text);
 
-	if (tweet.text.screen_name !== scanned_user_screen_name && score_is_problematic(score)) {
-		score *= tweet.user.followers_count;
-	}
+	// if (tweet.text.screen_name !== scanned_user_screen_name && score_is_problematic(score)) {
+		// score *= tweet.user.followers_count;
+	// }
 
 	tweet.level = score;
 }

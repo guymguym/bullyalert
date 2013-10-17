@@ -11,6 +11,10 @@
 	function BullyCtrl($scope, $http, $location) {
 		$scope.location = $location;
 
+		// $scope.query = '@yahoomail';
+		// $scope.query = '@MileyCyrus';
+		$scope.query = '@RealamandatoddM';
+
 		$scope.analyze = function() {
 			$scope.last_query = $scope.query;
 			$scope.last_result = '';
@@ -23,10 +27,15 @@
 				}
 			}).then(function(res) {
 				$scope.last_result = res.data;
+				console.log($scope.last_result);
 			}, function(err) {
 				$scope.last_error = err;
 			});
 		};
+
+		$scope.stringify = function(o) {
+			return JSON.stringify(o);
+		}
 	}
 
 })();

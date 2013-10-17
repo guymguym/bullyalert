@@ -22,8 +22,44 @@ var twit = new twitter({
 });
 
 exports.tweet_search = function(search_expression, callback) {
-	return twit.search(search_expression, function(data) {
-		return callback(null, data);
+	var max_id;
+	var results = new Array(1000);
+	var num = 0;
+	var done = false;
+	async.whilst(function() {
+		console.log('TWT1', num);
+		return !done && num < results.length;
+	}, function(next) {
+		console.log('TWT2', num);
+		var opt = {
+			count: 100
+		};
+		if (max_id) {
+			opt.max_id = max_id;
+		}
+		return twit.search(search_expression, opt, function(data) {
+			console.log('TWT3', num, data);
+			if (!data || !data.statuses) {
+				console.error('FAILED TO GET MORE TWEETS', data);
+				done = true;
+				return next();
+			}
+			// TODO check for error in data somewhere
+			if (!data.statuses.length) {
+				done = true;
+				return next();
+			}
+			for (var i = 0; i < data.statuses.length; i++) {
+				var status = data.statuses[i];
+				if (!status.retweeted) {
+					results[num++] = status;
+				}
+			}
+			max_id = data.statuses[data.statuses.length - 1].id;
+			return next();
+		});
+	}, function(err) {
+		return callback(err, results.slice(0, num));
 	});
 };
 
