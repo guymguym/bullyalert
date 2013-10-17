@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"underscore": "1.5.1",
+		"util": "0.4.9",
 		"underscore.string": "2.3.3",
 		"backbone": "1.0.0",
 		"express": "3.3.4",
@@ -41,6 +42,7 @@
 		"grunt-contrib-jshint": "0.6.1",
 		"grunt-contrib-concat": "0.3.0",
 		"grunt-contrib-uglify": "0.2.2",
+		"twitter": "0.2.3",
 		"grunt-contrib-nodeunit": "0.2.0"
 	},
 	"//": {
