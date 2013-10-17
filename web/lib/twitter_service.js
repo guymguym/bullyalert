@@ -1,3 +1,4 @@
+/* jshint -W099 */
 var async = require('async');
 var twitter = require('twitter');
 var _ = require('underscore');
@@ -25,7 +26,7 @@ var twit = new twitter({
 // var user_info = {};
 twit.search('@grolnik', function(data) {
 	// console.log(util.inspect(data));
-	var tweets = data.statuses
+	var tweets = data.statuses;
 	_.each(data.statuses, function(tweet) {
 
 		console.log('----------------------------');
