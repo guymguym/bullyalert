@@ -59,3 +59,5 @@ function get_tweet_score(tweet, scanned_user_screen_name) {
 
 	tweet.level = score;
 }
+
+exports.get_tweet_score = get_tweet_score;

@@ -2,6 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 var afinn = require('./afinn');
 var twitter = require('./twitter_service');
+var analyze_tweet = require('./analyze_tweet');
 
 function analyze(args, callback) {
 	console.log('ANALYZE ARGS', args);
@@ -40,9 +41,7 @@ function analyze(args, callback) {
 			// calculate level per twit
 			for (i = 0; i < messages.length; i++) {
 				msg = messages[i];
-
-				// TODO: calc twit level
-				msg.level = Math.random();
+				analyze_tweet.get_tweet_score(msg, args.query);
 			}
 
 			// group the messages by user id
