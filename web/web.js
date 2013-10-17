@@ -71,7 +71,7 @@ app.engine('html', dot_emc_app.__express);
 
 // configure app middleware handlers in the order to use them
 
-// app.use(express.favicon('/public/images/bullyalert.ico'));
+app.use(express.favicon('/public/img/kid.gif'));
 app.use(express.logger());
 app.use(function(req, res, next) {
 	// HTTPS redirect:
@@ -186,10 +186,12 @@ function error_501(req, res, next) {
 // ROUTES //
 ////////////
 
+var engine = require('./lib/engine');
 
+app.post('/analyze', engine.analyze);
 
 app.get('/', function(req, res) {
-	res.end('BULLY');
+	return res.render('home.html');
 });
 
 // start http server
