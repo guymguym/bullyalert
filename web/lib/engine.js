@@ -7,8 +7,6 @@ var analyze_tweet = require('./analyze_tweet');
 function analyze(args, callback) {
 	console.log('ANALYZE ARGS', args);
 
-	var users_map = {};
-
 	return async.waterfall([
 
 		function(next) {
@@ -48,19 +46,18 @@ function analyze(args, callback) {
 					total_count++;
 					console.log('LEVEL', msg.level, avg_level, total_level);
 				}
-				_.sortBy(list, 'level');
+				list = _.sortBy(list, 'level');
 				avg_level /= list.length;
 				var user = {
 					user: list[0].user,
 					level: avg_level,
 					twits: list,
 				};
-				if (avg_level < -4) {
+				if (avg_level > 0.2) {
 					bullys.push(user);
 				}
-				users_map[id] = user;
 			}
-			_.sortBy(bullys, 'level');
+			bullys = _.sortBy(bullys, 'level');
 			total_level /= total_count;
 
 			return next(null, {

@@ -14,19 +14,21 @@ console.log('afinn.unknown_words: ', afinn.unknown_words);
 // console.log(get_text_score('ab . adsf. afds QWEvd 3dsd ? 2eeds'));
 
 function get_text_score(text) {
-	var punctuationless = S(text).stripPunctuation().s; //My string full of punct
+	var punctuationless = text.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, " ");
+	// S(text).stripPunctuation().s; //My string full of punct
 	var words = punctuationless.toLowerCase().split(' ');
-	console.log('words: ', words);
 	var sum = 0;
-	var unknown_words = [];
+	// var unknown_words = [];
 	_.each(words, function(word) {
-		if (afinn.words[word]) {
+		if (word in afinn.words) {
 			sum += afinn.words[word];
 		} else {
-			unknown_words.push(word);
+			// unknown_words.push(word);
 		}
 	});
+	console.log('words: ', words, sum);
 
+	/*
 	unknown_words = _.uniq(unknown_words);
 
 	_.each(unknown_words, function(unknown_word) {
@@ -40,6 +42,7 @@ function get_text_score(text) {
 			console.log('unknown_words: ', unknown_words);
 		}
 	});
+	*/
 	return sum;
 }
 
@@ -54,10 +57,20 @@ function get_tweet_score(tweet, scanned_user_screen_name) {
 	var score = get_text_score(tweet.text);
 
 	// if (tweet.text.screen_name !== scanned_user_screen_name && score_is_problematic(score)) {
-		// score *= tweet.user.followers_count;
+	// score *= tweet.user.followers_count;
 	// }
 
-	tweet.level = score;
+	if (score >= 0) {
+		tweet.level = 0;
+	} else {
+		if (tweet.retweet_count >= 10) {
+			score *= 2;
+		}
+		if (score < -15) {
+			score = -15;
+		}
+		tweet.level = -score / 15;
+	}
 }
 
 exports.get_tweet_score = get_tweet_score;

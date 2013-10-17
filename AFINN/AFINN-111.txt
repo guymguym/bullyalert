@@ -1537,9 +1537,9 @@ misleading	-3
 misread	-1
 misreporting	-2
 misrepresentation	-2
-miss	-2
-missed	-2
-missing	-2
+--miss	-2
+--missed	-2
+--missing	-2
 mistake	-2
 mistaken	-2
 mistakes	-2

@@ -23,12 +23,13 @@ var twit = new twitter({
 
 exports.tweet_search = function(search_expression, callback) {
 	var max_id;
-	var results = new Array(1000);
+	var results = new Array(300);
 	var num = 0;
 	var done = false;
+	var iterations = 0;
 	async.whilst(function() {
 		console.log('TWT1', num);
-		return !done && num < results.length;
+		return !done && num < results.length && iterations < 5;
 	}, function(next) {
 		console.log('TWT2', num);
 		var opt = {
@@ -38,20 +39,20 @@ exports.tweet_search = function(search_expression, callback) {
 			opt.max_id = max_id;
 		}
 		return twit.search(search_expression, opt, function(data) {
-			console.log('TWT3', num, data);
+			console.log('TWT3', num);
+			iterations++;
 			if (!data || !data.statuses) {
 				console.error('FAILED TO GET MORE TWEETS', data);
 				done = true;
 				return next();
 			}
-			// TODO check for error in data somewhere
 			if (!data.statuses.length) {
 				done = true;
 				return next();
 			}
 			for (var i = 0; i < data.statuses.length; i++) {
 				var status = data.statuses[i];
-				if (!status.retweeted) {
+				if (!status.retweeted_status) {
 					results[num++] = status;
 				}
 			}

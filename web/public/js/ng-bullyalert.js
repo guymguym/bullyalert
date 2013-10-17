@@ -11,9 +11,11 @@
 	function BullyCtrl($scope, $http, $location) {
 		$scope.location = $location;
 
-		// $scope.query = '@yahoomail';
-		// $scope.query = '@MileyCyrus';
-		$scope.query = '@RealamandatoddM';
+		$scope.query = '@elizabeth_tice';
+		$scope.query = '@jenny_sad';
+		$scope.query = '@MileyCyrus';
+		$scope.query = '@yahoomail';
+		$scope.query = '@KarenGravanoVH1';
 
 		$scope.analyze = function() {
 			$scope.last_query = $scope.query;
