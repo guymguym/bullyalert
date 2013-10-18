@@ -49,7 +49,10 @@
 				var xAxis = d3.svg.axis()
 					.scale(xscale)
 					.orient("bottom")
-					.ticks(5);
+					.ticks(5)
+					.tickFormat(function(x) {
+						return '';
+					});
 				svg.append("g")
 					.attr("class", "axis")
 					.attr("transform", "translate(0," + (height - pad) + ")")
