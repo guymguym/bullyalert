@@ -49,7 +49,7 @@
 				var xAxis = d3.svg.axis()
 					.scale(xscale)
 					.orient("bottom")
-					.ticks(5)
+					.ticks(4)
 					.tickFormat(function(x) {
 						return '';
 					});
@@ -63,7 +63,7 @@
 					.range([pad, height - pad - pad]);
 
 				var radius = function(msg) {
-					return msg.retweet_count >= 10 ? 30 : ((msg.retweet_count + 1) * 30 / 10);
+					return msg.retweet_count >= 10 ? 40 : ((msg.retweet_count + 1) * 40 / 10);
 				};
 				var circles = svg.selectAll("circle")
 					.data(messages)

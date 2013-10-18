@@ -1,4 +1,5 @@
 /* jshint node:true */
+/* jshint -W099 */
 'use strict';
 
 process.on('uncaughtException', function(err) {
