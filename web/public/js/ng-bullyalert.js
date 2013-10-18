@@ -30,11 +30,32 @@
 				}
 			}).then(function(res) {
 				$scope.last_result = res.data;
+				var width = 500;
+				var height = 50;
+				var pad = 50;
+				var messages = res.data.messages;
+				var first_id = messages[0].id;
+				var last_id = messages[0].id;
+				var range_id = last_id - first_id;
+				var range_id_width = width / range_id;
+				console.log('IDS', first_id, last_id, range_id);
 				var svg = d3.select("#graph")
 					.append("svg")
-					.attr("width", 500)
-					.attr("height", 100);
-				svg.selectAll("circle").data(res.data.messages).enter();
+					.attr("width", width + pad + pad)
+					.attr("height", height + pad + pad);
+				var circles = svg.selectAll("circle")
+					.data(messages)
+					.enter()
+					.append("circle");
+				circles.attr("cx", function(msg, i) {
+					return ((msg.id - first_id) * range_id_width) + pad;
+				});
+				circles.attr("cy", function(msg, i) {
+					return (msg.level * height) + pad;
+				});
+				circles.attr("r", function(msg, i) {
+					return msg.retweet_count >= 10 ? pad : ((msg.retweet_count + 1) * pad / 10);
+				});
 			}, function(err) {
 				$scope.last_error = err;
 			});

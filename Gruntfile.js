@@ -23,10 +23,13 @@ module.exports = function(grunt) {
 			install: true
 		},
 		jshint: {
-			all: [
+			files: [
 				'Gruntfile.js',
 				'web/**/*.js'
-			]
+			],
+			options: {
+				ignores: ['web/public/js/d3.v3.min.js']
+			}
 		},
 	});
 

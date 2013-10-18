@@ -21,7 +21,7 @@ function analyze(args, callback) {
 			// calculate level per message
 			for (var i = 0; i < messages.length; i++) {
 				var msg = messages[i];
-				var punctuationless = msg.text.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, " ");
+				var punctuationless = msg.text.replace(/[\.,-\/#!$%\^&\*;:{}=\-`~()]/g, " ");
 				var words = punctuationless.toLowerCase().split(' ');
 				var score = 0;
 				for (var j = 0; j < words.length; j++) {
@@ -50,6 +50,7 @@ function analyze(args, callback) {
 			// process each user and detect bullys
 			var users = [];
 			var total_level = 0;
+			var total_count = 0;
 
 			function sort_reverse_level(o) {
 				return -o.level;
@@ -57,28 +58,29 @@ function analyze(args, callback) {
 			for (var user_id in group_by_user_id) {
 				var user_messages = _.sortBy(group_by_user_id[user_id], sort_reverse_level);
 				var user_level = 0;
+				var user_count = 0;
 				for (var k = 0; k < user_messages.length; k++) {
 					user_level += user_messages[k].level;
+					if (user_messages[k].level > 0.1) {
+						user_count++;
+					}
 				}
 				total_level += user_level;
-				if (user_level > 10) {
-					user_level = 10;
+				total_count += user_count;
+				if (user_count) {
+					user_level /= user_count;
 				}
-				user_level /= 10;
 				var user = {
 					info: user_map[user_id],
 					level: user_level,
 					messages: user_messages,
 				};
-				if (user_level > 0.01) {
-					users.push(user);
-				}
+				users.push(user);
 			}
 			users = _.sortBy(users, sort_reverse_level);
-			if (total_level > 10) {
-				total_level = 10;
+			if (total_count) {
+				total_level /= total_count;
 			}
-			total_level /= 10;
 
 			return next(null, {
 				level: total_level,

@@ -5,6 +5,8 @@ var _ = require('underscore');
 var S = require('string');
 var util = require('util');
 var twitter = require('twitter');
+var fs = require('fs');
+var path = require('path');
 
 var consumer_key = '1RsaHtdnJxMWAQIU5gah5Q';
 var consumer_secret = 'g7KNom2T55oiSwp66BwGi2PbzwwzP45I9Juvx3E8Q';
@@ -28,6 +30,18 @@ exports.tweet_search = function(search_expression, callback) {
 	var num = 0;
 	var done = false;
 	var iterations = 0;
+
+	var cache_file_path = path.resolve(__dirname, search_expression);
+	if (process.env.READ_CACHE_TWITTER) {
+		if (fs.existsSync(cache_file_path)) {
+			var cached_data = fs.readFileSync(cache_file_path);
+			if (cached_data) {
+				cached_data = JSON.parse(cached_data);
+				return callback(null, cached_data.results, cached_data.user_map);
+			}
+		}
+	}
+
 	async.whilst(function() {
 		console.log('TWT1', num);
 		return !done && num < results.length && iterations < 5;
@@ -58,6 +72,7 @@ exports.tweet_search = function(search_expression, callback) {
 						id: status.id,
 						text: status.text,
 						user_id: status.user.id,
+						user_name: status.user.name,
 						retweet_count: status.retweet_count
 					};
 					user_map[status.user.id] = status.user;
@@ -67,7 +82,14 @@ exports.tweet_search = function(search_expression, callback) {
 			return next();
 		});
 	}, function(err) {
-		return callback(err, results.slice(0, num), user_map);
+		results = results.slice(0, num);
+		if (process.env.WRITE_CACHE_TWITTER) {
+			fs.writeFileSync(path.resolve(__dirname, search_expression), JSON.stringify({
+				results: results,
+				user_map: user_map
+			}));
+		}
+		return callback(err, results, user_map);
 	});
 };
 

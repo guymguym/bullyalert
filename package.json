@@ -44,7 +44,8 @@
 		"grunt-contrib-concat": "0.3.0",
 		"grunt-contrib-uglify": "0.2.2",
 		"twitter": "0.2.3",
-		"grunt-contrib-nodeunit": "0.2.0"
+		"grunt-contrib-nodeunit": "0.2.0",
+		"memjs": "0.7.2"
 	},
 	"//": {
 		"nedb": "0.8.5",
