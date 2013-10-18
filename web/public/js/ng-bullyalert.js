@@ -69,9 +69,6 @@
 				circles.attr("cx", function(msg, i) {
 					return xscale(msg.id);
 				});
-				circles.attr("cy", function(msg, i) {
-					return yscale(msg.level);
-				});
 				circles.attr("r", radius);
 				circles.attr("fill", function(msg) {
 					return "rgba(" + (msg.level * 250) + ", 150, 220, 0.8)";
@@ -80,6 +77,10 @@
 				circles.attr("stroke-width", function(msg) {
 					return radius(msg) / 2;
 				});
+				var y0 = yscale(0);
+				circles.attr("cy", y0).transition().attr("cy", function(msg, i) {
+					return yscale(msg.level);
+				}).duration(2000).delay(750);
 				// circles.click(function())
 			}, function(err) {
 				$scope.last_error = err;
