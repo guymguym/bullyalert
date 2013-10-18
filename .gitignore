@@ -3,3 +3,5 @@
 .env
 node_modules/
 bower_components/
+Projects/BullyAlert.me/dist
+Projects/BullyAlert.me/build

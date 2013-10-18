@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 18, 2013 4:23:40 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="me.bullyalert.dal.pojo.Subscriber" table="subscriber" catalog="bullyalert">
+        <id name="id" type="string">
+            <column name="id" length="16" />
+            <generator class="assigned" />
+        </id>
+        <property name="phone" type="string">
+            <column name="phone" length="45" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" />
+        </property>
+        <property name="twitterMonitor" type="string">
+            <column name="twitter_monitor" length="45" not-null="true" />
+        </property>
+        <property name="lastAlertSent" type="timestamp">
+            <column name="last_alert_sent" length="19" />
+        </property>
+    </class>
+</hibernate-mapping>

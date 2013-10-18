@@ -1,0 +1,79 @@
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-image: url('images/linen.png');
+    background-repeat: repeat;
+}
+strong {
+    font-weight: 800;
+}
+h1 {
+    font-size: 24px;
+    text-shadow: 0px 1px 1px #808080;
+}
+.submit_button {
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 3px;
+    border: 1px solid #000000;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 3px;
+    padding: 8px;
+    padding-left: 25px;
+    padding-right: 25px;
+    cursor: pointer;
+}
+.text_field {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 18px;
+    border: 1px solid #c0c0c0;
+    border-bottom: 1px solid #a0a0a0;
+}
+.field_name {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #404040;
+    text-shadow: 0px 1px 1px #ffffff;
+}
+.section_div {
+    margin-top: 20px;
+}
+.section_title {
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #000000;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+}
+
+#power-gauge g.arc {
+    fill: steelblue;
+}
+
+#power-gauge g.pointer {
+    fill: #e85116;
+    stroke: #b64011;
+}
+
+#power-gauge g.label text {
+    text-anchor: middle;
+    font-size: 14px;
+    font-weight: bold;
+    fill: #666;
+}
+.tweet_icon {
+    vertical-align: top;
+    height: 16px;
+    margin: 5px;
+}
+.tweet_span {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #808080;
+    background-color: #ffffff;
+    color: #808080;
+    font-size: 14px;
+}
