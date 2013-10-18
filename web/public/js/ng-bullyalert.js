@@ -11,11 +11,11 @@
 	function BullyCtrl($scope, $http, $location) {
 		$scope.location = $location;
 
-		$scope.query = '@elizabeth_tice';
-		$scope.query = '@MileyCyrus';
-		$scope.query = '@yahoomail';
+		// $scope.query = '@elizabeth_tice';
+		// $scope.query = '@yahoomail';
 		$scope.query = '@KarenGravanoVH1';
-		$scope.query = '@jenny_sad';
+		// $scope.query = '@jenny_sad';
+		// $scope.query = '@MileyCyrus';
 
 		$scope.analyze = function() {
 			d3.select("#graph").select("svg").remove();
@@ -30,32 +30,57 @@
 				}
 			}).then(function(res) {
 				$scope.last_result = res.data;
-				var width = 500;
-				var height = 50;
-				var pad = 50;
+				var width = 900;
+				var height = 300;
+				var pad = 25;
 				var messages = res.data.messages;
 				var first_id = messages[0].id;
-				var last_id = messages[0].id;
-				var range_id = last_id - first_id;
-				var range_id_width = width / range_id;
-				console.log('IDS', first_id, last_id, range_id);
+				var last_id = messages[messages.length - 1].id;
+
 				var svg = d3.select("#graph")
 					.append("svg")
-					.attr("width", width + pad + pad)
-					.attr("height", height + pad + pad);
+					.attr("width", width)
+					.attr("height", height)
+					.style('border', 'solid 1px black');
+
+				var xscale = d3.scale.linear()
+					.domain([first_id, last_id])
+					.range([pad, width - pad - pad]);
+				var xAxis = d3.svg.axis()
+					.scale(xscale)
+					.orient("bottom")
+					.ticks(5);
+				svg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0," + (height - pad) + ")")
+					.call(xAxis);
+
+				var yscale = d3.scale.linear()
+					.domain([1, 0])
+					.range([pad, height - pad - pad]);
+
+				var radius = function(msg) {
+					return msg.retweet_count >= 10 ? 30 : ((msg.retweet_count + 1) * 30 / 10);
+				}
 				var circles = svg.selectAll("circle")
 					.data(messages)
 					.enter()
 					.append("circle");
 				circles.attr("cx", function(msg, i) {
-					return ((msg.id - first_id) * range_id_width) + pad;
+					return xscale(msg.id);
 				});
 				circles.attr("cy", function(msg, i) {
-					return (msg.level * height) + pad;
+					return yscale(msg.level);
 				});
-				circles.attr("r", function(msg, i) {
-					return msg.retweet_count >= 10 ? pad : ((msg.retweet_count + 1) * pad / 10);
+				circles.attr("r", radius);
+				circles.attr("fill", function(msg) {
+					return "rgba(" + (msg.level * 250) + ", 150, 220, 0.8)";
 				});
+				circles.attr("stroke", "rgba(100, 220, 50, 0.40)")
+				circles.attr("stroke-width", function(msg) {
+					return radius(msg) / 2;
+				});
+				// circles.click(function())
 			}, function(err) {
 				$scope.last_error = err;
 			});
