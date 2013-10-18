@@ -24,6 +24,7 @@ var twit = new twitter({
 exports.tweet_search = function(search_expression, callback) {
 	var max_id;
 	var results = new Array(300);
+	var user_map = {};
 	var num = 0;
 	var done = false;
 	var iterations = 0;
@@ -53,14 +54,20 @@ exports.tweet_search = function(search_expression, callback) {
 			for (var i = 0; i < data.statuses.length; i++) {
 				var status = data.statuses[i];
 				if (!status.retweeted_status) {
-					results[num++] = status;
+					results[num++] = {
+						id: status.id,
+						text: status.text,
+						user_id: status.user.id,
+						retweet_count: status.retweet_count
+					};
+					user_map[status.user.id] = status.user;
 				}
 			}
 			max_id = data.statuses[data.statuses.length - 1].id;
 			return next();
 		});
 	}, function(err) {
-		return callback(err, results.slice(0, num));
+		return callback(err, results.slice(0, num), user_map);
 	});
 };
 

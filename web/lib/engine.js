@@ -10,63 +10,65 @@ function analyze(args, callback) {
 	return async.waterfall([
 
 		function(next) {
-			return twitter.tweet_search(args.query, function(err, messages) {
+			return twitter.tweet_search(args.query, function(err, messages, user_map) {
 				if (err) {
 					return next(err);
 				}
-				return next(null, messages);
+				return next(null, messages, user_map);
 			});
 		},
 
-		function(messages, next) {
-			var i, msg;
+		function(messages, user_map, next) {
+			var i;
 
 			// calculate level per twit
 			for (i = 0; i < messages.length; i++) {
-				msg = messages[i];
-				analyze_tweet.get_tweet_score(msg, args.query);
+				analyze_tweet.get_tweet_score(messages[i], args.query);
 			}
 
 			// group the messages by user id
-			var group_by_user = _.groupBy(messages, function(msg) {
-				return msg.user.id;
+			var group_by_user_id = _.groupBy(messages, function(msg) {
+				return msg.user_id;
 			});
 
 			// process each user and detect bullys
+			var users = [];
 			var total_level = 0;
-			var total_count = 0;
-			var bullys = [];
 
 			function sort_reverse_level(o) {
 				return -o.level;
 			}
-			for (var id in group_by_user) {
-				var list = group_by_user[id];
-				var avg_level = 0;
-				for (i = 0; i < list.length; i++) {
-					msg = list[i];
-					avg_level += msg.level;
-					total_level += msg.level;
-					total_count++;
-					// console.log('LEVEL', msg.level, avg_level, total_level);
+			for (var user_id in group_by_user_id) {
+				var user_messages = _.sortBy(group_by_user_id[user_id], sort_reverse_level);
+				var user_level = 0;
+				for (i = 0; i < user_messages.length; i++) {
+					var msg = user_messages[i];
+					user_level += msg.level;
 				}
-				list = _.sortBy(list, sort_reverse_level);
-				avg_level /= list.length;
+				total_level += user_level;
+				if (user_level >= 10) {
+					user_level = 10;
+				}
+				user_level /= 10;
 				var user = {
-					user: list[0].user,
-					level: avg_level,
-					twits: list,
+					info: user_map[user_id],
+					level: user_level,
+					messages: user_messages,
 				};
-				if (avg_level > 0.2) {
-					bullys.push(user);
+				if (user_level > 0.2) {
+					users.push(user);
 				}
 			}
-			bullys = _.sortBy(bullys, sort_reverse_level);
-			total_level /= total_count;
+			users = _.sortBy(users, sort_reverse_level);
+			if (total_level >= 20) {
+				total_level = 20;
+			}
+			total_level /= 20;
 
 			return next(null, {
 				level: total_level,
-				bullys: bullys,
+				users: users,
+				messages: messages
 			});
 		}
 

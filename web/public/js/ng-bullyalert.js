@@ -18,6 +18,7 @@
 		$scope.query = '@jenny_sad';
 
 		$scope.analyze = function() {
+			d3.select("#graph").select("svg").remove();
 			$scope.last_query = $scope.query;
 			$scope.last_result = '';
 			$scope.last_error = null;
@@ -29,7 +30,11 @@
 				}
 			}).then(function(res) {
 				$scope.last_result = res.data;
-				console.log($scope.last_result);
+				var svg = d3.select("#graph")
+					.append("svg")
+					.attr("width", 500)
+					.attr("height", 100);
+				svg.selectAll("circle").data(res.data.messages).enter();
 			}, function(err) {
 				$scope.last_error = err;
 			});
@@ -38,6 +43,7 @@
 		$scope.stringify = function(o) {
 			return JSON.stringify(o);
 		};
+
 	}
 
 })();
