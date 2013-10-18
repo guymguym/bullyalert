@@ -18,13 +18,13 @@ var http = require('http');
 var dot = require('dot');
 var dot_emc = require('dot-emc');
 var express = require('express');
-var passport = require('passport');
-var mongoose = require('mongoose');
+// var passport = require('passport');
+// var mongoose = require('mongoose');
 
 // connect to the database
-if (process.env.MONGOHQ_URL) {
-	mongoose.connect(process.env.MONGOHQ_URL);
-}
+// if (process.env.MONGOHQ_URL) {
+// 	mongoose.connect(process.env.MONGOHQ_URL);
+// }
 
 // create express app
 var app = express();
@@ -103,8 +103,8 @@ app.use(express.cookieSession({
 		maxAge: 356 * 24 * 60 * 60 * 1000 // 1 year
 	}
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 var allowCrossDomain = function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
