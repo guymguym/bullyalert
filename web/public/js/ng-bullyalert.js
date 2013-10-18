@@ -63,7 +63,7 @@
 					.range([pad, height - pad - pad]);
 
 				var radius = function(msg) {
-					return msg.retweet_count >= 10 ? 40 : ((msg.retweet_count + 1) * 40 / 10);
+					return msg.retweet_count >= 10 ? 50 : ((msg.retweet_count + 1) * 50 / 10);
 				};
 				var circles = svg.selectAll("circle")
 					.data(messages)
@@ -84,7 +84,10 @@
 				circles.attr("cy", y0).transition().attr("cy", function(msg, i) {
 					return yscale(msg.level);
 				}).duration(2000).delay(750);
-				// circles.click(function())
+				circles.on('click', function(msg) {
+					alert('(Bully-level ' + (msg.level * 100).toFixed(0) +
+						'% Retweeted ' + msg.retweet_count + ') ' + msg.text);
+				});
 			}, function(err) {
 				$scope.last_error = err;
 			});
