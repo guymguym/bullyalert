@@ -61,7 +61,7 @@
 
 				var radius = function(msg) {
 					return msg.retweet_count >= 10 ? 30 : ((msg.retweet_count + 1) * 30 / 10);
-				}
+				};
 				var circles = svg.selectAll("circle")
 					.data(messages)
 					.enter()
@@ -73,7 +73,7 @@
 				circles.attr("fill", function(msg) {
 					return "rgba(" + (msg.level * 250) + ", 150, 220, 0.8)";
 				});
-				circles.attr("stroke", "rgba(100, 220, 50, 0.40)")
+				circles.attr("stroke", "rgba(100, 220, 50, 0.40)");
 				circles.attr("stroke-width", function(msg) {
 					return radius(msg) / 2;
 				});
