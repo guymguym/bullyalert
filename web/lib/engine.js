@@ -2,7 +2,6 @@ var async = require('async');
 var _ = require('underscore');
 var afinn = require('./afinn');
 var twitter = require('./twitter_service');
-var analyze_tweet = require('./analyze_tweet');
 
 function analyze(args, callback) {
 	console.log('ANALYZE ARGS', args);
@@ -19,11 +18,28 @@ function analyze(args, callback) {
 		},
 
 		function(messages, user_map, next) {
-			var i;
-
-			// calculate level per twit
-			for (i = 0; i < messages.length; i++) {
-				analyze_tweet.get_tweet_score(messages[i], args.query);
+			// calculate level per message
+			for (var i = 0; i < messages.length; i++) {
+				var msg = messages[i];
+				var punctuationless = msg.text.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, " ");
+				var words = punctuationless.toLowerCase().split(' ');
+				var score = 0;
+				for (var j = 0; j < words.length; j++) {
+					if (words[j] in afinn.words) {
+						score += afinn.words[words[j]];
+					}
+				}
+				if (score >= 0) {
+					msg.level = 0;
+				} else {
+					if (msg.retweet_count >= 10) {
+						score *= 2;
+					}
+					if (score < -10) {
+						score = -10;
+					}
+					msg.level = -score / 10;
+				}
 			}
 
 			// group the messages by user id
@@ -41,12 +57,11 @@ function analyze(args, callback) {
 			for (var user_id in group_by_user_id) {
 				var user_messages = _.sortBy(group_by_user_id[user_id], sort_reverse_level);
 				var user_level = 0;
-				for (i = 0; i < user_messages.length; i++) {
-					var msg = user_messages[i];
-					user_level += msg.level;
+				for (var k = 0; k < user_messages.length; k++) {
+					user_level += user_messages[k].level;
 				}
 				total_level += user_level;
-				if (user_level >= 10) {
+				if (user_level > 10) {
 					user_level = 10;
 				}
 				user_level /= 10;
@@ -55,15 +70,15 @@ function analyze(args, callback) {
 					level: user_level,
 					messages: user_messages,
 				};
-				if (user_level > 0.2) {
+				if (user_level > 0.01) {
 					users.push(user);
 				}
 			}
 			users = _.sortBy(users, sort_reverse_level);
-			if (total_level >= 20) {
-				total_level = 20;
+			if (total_level > 10) {
+				total_level = 10;
 			}
-			total_level /= 20;
+			total_level /= 10;
 
 			return next(null, {
 				level: total_level,
